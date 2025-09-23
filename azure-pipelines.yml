@@ -17,6 +17,7 @@ steps:
     inputs:
       provider: 'azurerm'
       command: 'init'
+      workingDirectory: '$(System.DefaultWorkingDirectory)\parent_module'
       backendServiceArm: 'Hitesh_Workload_Federation'
       backendAzureRmStorageAccountName: 'hiteshstginit'
       backendAzureRmContainerName: 'hiteshinitcontainer'
@@ -27,6 +28,7 @@ steps:
     inputs:
       provider: 'azurerm'
       command: 'plan'
+      workingDirectory: '$(System.DefaultWorkingDirectory)\parent_module'
       environmentServiceNameAzureRM: 'Hitesh_Workload_Federation'
 
 
@@ -35,4 +37,5 @@ steps:
     inputs:
       provider: 'azurerm'
       command: 'apply'
+      workingDirectory: '$(System.DefaultWorkingDirectory)\parent_module'
       environmentServiceNameAzureRM: 'Hitesh_Workload_Federation'
