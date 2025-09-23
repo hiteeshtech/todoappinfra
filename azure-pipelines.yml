@@ -1,0 +1,39 @@
+trigger:
+  - main
+
+pool:
+  -Hitesh_laptop_pool
+
+steps:
+  -     
+- task: TerraformInstaller@1
+  displayName = 'terraform install'
+  inputs:
+    terraformVersion: 'latest'
+
+
+- task: TerraformTask@5
+  displayName = 'terraforminit'
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'Hitesh_Workload_Federation'
+    backendAzureRmStorageAccountName: 'hiteshstginit'
+    backendAzureRmContainerName: 'hiteshinitcontainer'
+    backendAzureRmKey: 'terraform.tfstate'
+
+
+- task: TerraformTask@5
+  displayName = 'terraformplan'
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    environmentServiceNameAzureRM: 'Hitesh_Workload_Federation'
+
+
+- task: TerraformTask@5
+  displayName = 'terraformapply'
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    environmentServiceNameAzureRM: 'Hitesh_Workload_Federation'
