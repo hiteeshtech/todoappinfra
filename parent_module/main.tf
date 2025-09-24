@@ -32,25 +32,25 @@ module "public_ip" {
 }
 
 module "sql_server" {
-  sql_server_name              = "hiteshsqlservertodoappinfra"
+  sql_server_name              = "hitusqlservertodoappinfra"
   source                       = "../child_module/azurerm_sql_server"
   resource_group_name          = "RG_Hitesh_Todoappinfra"
   location                     = "Central India"
   administrator_login          = "sharmah91"
-  administrator_login_password = "Hitesh1001@@"
+  administrator_login_password = "Hitu1001@@"
   depends_on                   = [module.resource_group]
 }
 
 module "sql_database" {
   source              = "../child_module/azurerm_sql_database"
   sql_database_name   = "hiteshsqldatabsetodoappinfra"
-  sql_server_name     = "hiteshsqlservertodoappinfra"
+  sql_server_name     = "hitusqlservertodoappinfra"
   resource_group_name = "RG_Hitesh_Todoappinfra"
   depends_on          = [module.sql_server]
 }
 
 module "key_vault" {
-  key_vault_name      = "kvhiteshtodoappinfra"
+  key_vault_name      = "infrahiteshkv"
   resource_group_name = "RG_Hitesh_Todoappinfra"
   location            = "Central India"
   source              = "../child_module/azurerm_keyvault"
@@ -63,7 +63,7 @@ module "vm_password" {
   # resource_group_name = "RG_Hitesh_Todoappinfra"
   key_vault_id = module.key_vault.key_vault_id
   secret_name  = "vm-password"
-  secret_value = "Hitesh1001@@"
+  secret_value = "Hitu1001@@"
 }
 
 module "vm_username" {
@@ -73,7 +73,7 @@ module "vm_username" {
   # resource_group_name = "RG_Hitesh_Todoappinfra"
   key_vault_id = module.key_vault.key_vault_id
   secret_name  = "vm-username"
-  secret_value = "sharmah91"
+  secret_value = "sharmah9110"
 }
 
 module "virtual_machine" {
@@ -81,7 +81,7 @@ module "virtual_machine" {
   source     = "../child_module/azurerm_virtual_machine"
 
   resource_group_name  = "RG_Hitesh_Todoappinfra"
-  location             = "centralindia"
+  location             = "Central India"
   vm_name              = "hiteshvmtodoinfra"
   vm_size              = "Standard_B1s"
   admin_username       = "sharmah91"
@@ -93,7 +93,7 @@ module "virtual_machine" {
   public_ip_name       = "pip_Hitesh_todoinfra"
   vnet_name            = "VNET_Hitesh_Todoinfra"
   subnet_name          = "subnet_Hitesh_todoinfra"
-  key_vault_name       = "kvhiteshtodoappinfra"
+  key_vault_name       = "infrahiteshkv"
   username_secret_name = "vm-username"
   password_secret_name = "vm-password"
 }
