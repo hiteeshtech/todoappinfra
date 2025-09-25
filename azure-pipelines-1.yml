@@ -1,0 +1,23 @@
+trigger:
+  - main
+
+pool:
+  name: Hitesh_Laptop_Pool
+
+jobs:
+  - job:  Terraformjob
+    displayName: 'terraform end-to-end'
+    steps:
+      - 
+- task: TerraformInstaller@1
+  inputs:
+    terraformVersion: 'latest'
+
+
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/parent_module'
+    environmentServiceNameAzureRM: 'Hitesh_Workload_Federation'
+ 
