@@ -8,16 +8,36 @@ jobs:
   - job:  Terraformjob
     displayName: 'terraform end-to-end'
     steps:
-      - 
-- task: TerraformInstaller@1
-  inputs:
-    terraformVersion: 'latest'
+    - task: TerraformInstaller@1
+      displayName: 'terraform Install'
+      inputs:
+        terraformVersion: 'latest'
 
 
-- task: TerraformTask@5
-  inputs:
-    provider: 'azurerm'
-    command: 'plan'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/parent_module'
-    environmentServiceNameAzureRM: 'Hitesh_Workload_Federation'
- 
+    - task: TerraformTask@5
+      displayName: 'terraform INIT'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)\parent_module'
+        backendServiceArm: 'Hitesh_Workload_Federation'
+        backendAzureRmStorageAccountName: 'hiteshstginit'
+        backendAzureRmContainerName: 'hiteshinitcontainer'
+        backendAzureRmKey: 'terraform.tfstate'
+
+
+    - task: TerraformTask@5
+      displayName: 'Terraform Plan'
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)\parent_module'
+        environmentServiceNameAzureRM: 'Hitesh_Workload_Federation'
+
+    - task: TerraformTask@5
+      displayName: 'terraform Apply'
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)\parent_module'
+        environmentServiceNameAzureRM: 'Hitesh_Workload_Federation'
