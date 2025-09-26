@@ -5,13 +5,6 @@ terraform {
       version = "~>4.0"
     }
   }
-  backend "azurerm" {
-    resource_group_name  = "RG_terraform_hitesh_init"
-    storage_account_name = "hiteshstginit"
-    container_name       = "hiteshinitcontainer"
-    key                  = "terraform.tfstate"
-  }
-
 }
 
 
