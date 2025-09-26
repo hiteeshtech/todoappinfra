@@ -2,7 +2,7 @@ trigger:
   - main
 
 pool:
-  name: Hitesh_Office_PC_Pool
+  name: Hitesh_PC_Office_Pool
 
 jobs:
   - job: 
@@ -13,24 +13,23 @@ jobs:
         inputs:
           terraformVersion: 'latest'
 
-  - task: TerraformTask@5
-    inputs:
-      provider: 'azurerm'
-      command: 'init'
-      workingDirectory: '$(System.DefaultWorkingDirectory)\parent_module'
-      backendServiceArm: 'Hitesh_Workload_Federation'
-      backendAzureRmStorageAccountName: 'hiteshstginit'
-      backendAzureRmContainerName: 'hiteshinitcontainer'
-      backendAzureRmKey: 'terraform.tfstate'
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/parent_module'
+          backendServiceArm: 'Hitesh_Workload_Federation'
+          backendAzureRmStorageAccountName: 'hiteshstginit'
+          backendAzureRmContainerName: 'hiteshinitcontainer'
+          backendAzureRmKey: 'terraform.tfstate'
 
-  - task: TerraformTask@5
-    inputs:
-      provider: 'azurerm'
-      command: 'plan'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/parent_module'
-      environmentServiceNameAzureRM: 'Hitesh_Workload_Federation'
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'plan'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/parent_module'
+          environmentServiceNameAzureRM: 'Hitesh_Workload_Federation'
 
-jobs:
   - job: 
     displayName: 'terraform apply'
     steps:
@@ -38,6 +37,6 @@ jobs:
       inputs:
         provider: 'azurerm'
         command: 'apply'
-        workingDirectory: '$(System.DefaultWorkingDirectory)\parent_module'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/parent_module'
         commandOptions: '--auto-approve'
         environmentServiceNameAzureRM: 'Hitesh_Workload_Federation'
