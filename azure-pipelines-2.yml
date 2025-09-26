@@ -1,0 +1,43 @@
+trigger:
+  - main
+
+pool:
+  name: Hitesh_Office_PC_Pool
+
+jobs:
+  - job: 
+    displayName: 'Terraform upto plan'
+    steps:
+      - task: TerraformInstaller@1
+        displayName: 'terraform install'
+        inputs:
+          terraformVersion: 'latest'
+
+  - task: TerraformTask@5
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: '$(System.DefaultWorkingDirectory)\parent_module'
+      backendServiceArm: 'Hitesh_Workload_Federation'
+      backendAzureRmStorageAccountName: 'hiteshstginit'
+      backendAzureRmContainerName: 'hiteshinitcontainer'
+      backendAzureRmKey: 'terraform.tfstate'
+
+  - task: TerraformTask@5
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/parent_module'
+      environmentServiceNameAzureRM: 'Hitesh_Workload_Federation'
+
+jobs:
+  - job: 
+    displayName: 'terraform apply'
+    steps:
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)\parent_module'
+        commandOptions: '--auto-approve'
+        environmentServiceNameAzureRM: 'Hitesh_Workload_Federation'
